@@ -19,6 +19,15 @@ export default function UserNameMenu() {
       <DropdownMenuContent className="bg-slate-50 border-orange-500">
         <DropdownMenuItem>
           <Link
+            to="/manage-restaurant"
+            className="font-bold hover:text-orange-500"
+          >
+            Administrar Restaurante
+          </Link>
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem>
+          <Link
             to="/user-profile"
             className="font-bold hover:text-orange-500"
           >

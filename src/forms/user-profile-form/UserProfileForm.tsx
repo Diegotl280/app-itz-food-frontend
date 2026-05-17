@@ -11,11 +11,11 @@ import { useEffect } from 'react';
 
 const formSchema = z.object({
     email: z.string().optional(),
-    name: z.string("El nombre debe de ser requerido" )
+    name: z.string({ required_error: "El nombre debe de ser requerido" })
         .min(3, 'El nombre debe de tener al menos 3 carácteres'),
-    address: z.string( "Dirección debe de ser requerida" ),
-    city: z.string('Ciudad es requerida' ),
-    country: z.string('País es requerido')
+    address: z.string({ required_error: "Dirección debe de ser requerida" }),
+    city: z.string({ required_error: 'Ciudad es requerida' }),
+    country: z.string({ required_error: 'País es requerido' })
 });
 
 export type UserFormData = z.infer<typeof formSchema>;
