@@ -7,6 +7,7 @@ import queryClient from "./api/queryClient";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ManageRestaurantPage from "./pages/ManageRestaurantPage";
+import SearchPage from "./pages/SearchPage";
 
 const AppRoutes=()=>{
     return(
@@ -19,6 +20,14 @@ const AppRoutes=()=>{
                     </Layout>
                 }/>
                 <Route path='/auth-callback' element={ <AuthCallbackPage />} />
+                <Route
+                    path="/search/:city"
+                    element={
+                        <Layout showHero={false}>
+                            <SearchPage />
+                        </Layout>
+                    }
+                />
                 
                 { /* Protección de Rutas */}
                 <Route element={<ProtectedRoute /> } >

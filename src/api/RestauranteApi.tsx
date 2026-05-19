@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from 'sonner';
-import type { Restaurante } from './types';
+import type { Restaurante, RestauranteSearchResponse } from './types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -105,3 +105,39 @@ export function useUpdateRestaurante() {
         }
     }) //Fin de return
 } // Fin de useUpdateRestaurante
+
+export type SearchState = {
+    searchQuery: string;
+    page: number;
+    selectedCuisines: string[];
+    sortOption: string;
+}
+
+// Función para buscar restaurantes
+export const useSearchRestaurantes = (searchState: SearchState, city?: string) => {
+    const getSearchRestauranteRequest = async (): Promise<RestauranteSearchResponse> => {
+        const params = new URLSearchParams();
+        params.set("searchQuery", searchState.searchQuery);
+        params.set("page", searchState.page.toString());
+        params.set("selectedCuisines", searchState.selectedCuisines.join(","));
+        params.set("sortOptions", searchState.sortOption);
+
+        const res = await fetch(
+            `${API_BASE_URL}/api/restaurante/search/${city}?${params.toString()}`
+        );
+
+        if (!res.ok) {
+            throw new Error("Error al buscar un restaurante");
+        }
+
+        return res.json();
+    }; // Fin de getSearchRestauranteRequest
+
+    return useQuery({
+        queryKey: ["searchRestaurantes", city, searchState],
+        queryFn: getSearchRestauranteRequest,
+        enabled: !!city,
+    }); // Fin de return
+}; // Fin de useSearchRestaurantes
+
+
