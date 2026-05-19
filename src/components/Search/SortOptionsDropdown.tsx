@@ -25,8 +25,8 @@ export default function SortOptionsDropdown({ onChange, sortOption }: Props) {
     return (
         <div>
             <DropdownMenu>
-                <DropdownMenuTrigger className="cursor-pointer" asChild>
-                    <Button variant="outline" className="w-full">
+                <DropdownMenuTrigger>
+                    <Button variant="outline" className="w-full cursor-pointer">
                         Ordenar por: {selectedSortLabel}
                     </Button>
                 </DropdownMenuTrigger>
