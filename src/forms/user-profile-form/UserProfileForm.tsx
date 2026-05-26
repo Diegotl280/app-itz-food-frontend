@@ -23,9 +23,16 @@ export type UserFormData = z.infer<typeof formSchema>;
 type Props = {
     onSave: (userProfileData: UserFormData) => void;
     getUser: BackEndUser;
+    title?: string;
+    buttonText?: string;
 }
 
-export default function UserProfileForm({ onSave, getUser }: Props) {
+export default function UserProfileForm({
+    onSave,
+    getUser,
+    title = "Perfil de usuario",
+    buttonText = "Actualizar"
+}: Props) {
     const form = useForm<UserFormData>({
         defaultValues:{
             name: '',
@@ -54,7 +61,7 @@ export default function UserProfileForm({ onSave, getUser }: Props) {
             >
                 <CardHeader>
                     <CardTitle>
-                        Perfil de usuario
+                        {title}
                     </CardTitle>
                     <CardDescription>
                         Consulta y cambia la información de tu perfil aquí
@@ -182,7 +189,7 @@ export default function UserProfileForm({ onSave, getUser }: Props) {
                                         form='user-profile-form'
                                         className="bg-orange-500 text-white"
                                 >
-                                    Actualizar
+                                    {buttonText}
                                 </Button>
                             </Field>
                 </CardFooter>
@@ -190,5 +197,4 @@ export default function UserProfileForm({ onSave, getUser }: Props) {
         </Card>
     )
 }
-
 

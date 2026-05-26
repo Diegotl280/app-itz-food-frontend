@@ -32,6 +32,25 @@ export function useGetRestaurante() {
     }); // Fin de return
 }//Fin de useGetRestaurante
 
+// Hook para obtener los datos de un restaurante por ID
+export function useGetRestauranteById(restauranteId?: string) {
+    const getRestauranteByIdRequest = async (): Promise<Restaurante> => {
+        const res = await fetch(API_BASE_URL + `/api/restaurante/${restauranteId}`);
+
+        if (!res.ok) {
+            throw new Error("Error al obtener los datos del restaurante")
+        }
+
+        return res.json()
+    }
+
+    return useQuery({
+        queryKey: ['restaurante', restauranteId],
+        queryFn: getRestauranteByIdRequest,
+        enabled: !!restauranteId,
+    });
+}//Fin de useGetRestauranteById
+
 // Hook para crear un restaurante
 export function useCreateRestaurante() {
     const queryClient = useQueryClient();
@@ -139,5 +158,4 @@ export const useSearchRestaurantes = (searchState: SearchState, city?: string) =
         enabled: !!city,
     }); // Fin de return
 }; // Fin de useSearchRestaurantes
-
 

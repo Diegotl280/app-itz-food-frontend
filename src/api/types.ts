@@ -31,8 +31,8 @@ export type Restaurante = {
     restauranteName: string;
     city: string;
     country: string;
-    deliveryPrice: string;
-    estimatedDeliveryTime: string;
+    deliveryPrice: number;
+    estimatedDeliveryTime: number;
     cuisines: string [];
     menuItems: MenuItem[];
     imageUrl: string;
@@ -46,4 +46,27 @@ export type RestauranteSearchResponse = {
         page: number;
         pages: number
     }
+}
+
+export type CartItem = {
+    _id: string;
+    name: string;
+    price: number;
+    quantity: number;
+}
+
+export type CheckOutSessionRequest = {
+    cartItems: CartItem[];
+    deliveryDetails: {
+        email: string;
+        name: string;
+        address: string;
+        city: string;
+        country: string;
+    };
+    restauranteId: string;
+}
+
+export type CheckOutSessionResponse = {
+    url: string;
 }

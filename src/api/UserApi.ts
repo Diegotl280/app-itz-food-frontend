@@ -34,7 +34,7 @@ export function useCreateUser(){
         mutationFn: (user:User)=>createUserRequest(user),
         onError: (err)=>{
             console.log(err);
-            throw new Error('Error al crear el usuario');
+            toast.error('Error al crear el usuario');
         },
         onSuccess: (user)=>{
             console.log(user)
@@ -70,7 +70,6 @@ export function useUpdateUser(){
         onError: (err)=>{
             toast.error(err.toString());
             console.log(err);
-            throw new Error("Error al actualizar el usuario")
     },
         onSuccess: (user)=> {
             toast.success('Perfil del usuario actualizado')
@@ -81,7 +80,7 @@ export function useUpdateUser(){
 }; // Fin de useUpdateUser
 
 export function useGetUser(){
-    const {getAccessTokenSilently} = useAuth0();
+    const {getAccessTokenSilently, isAuthenticated} = useAuth0();
 
     //Función para actualizar un usuario
     const getUserRequest = async (): Promise<BackEndUser> =>{
@@ -101,6 +100,7 @@ export function useGetUser(){
 
     return useQuery({
         queryKey: ['users'],
-        queryFn: getUserRequest
+        queryFn: getUserRequest,
+        enabled: isAuthenticated
     }); // Fin de return
 }//Fin de useGetUser

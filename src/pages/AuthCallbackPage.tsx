@@ -11,11 +11,16 @@ export default function AuthCallbackPage() {
   
   const hasCreatedUser = useRef(false);
   useEffect ( ()=> {
+    const returnTo = sessionStorage.getItem("authReturnTo") || "/";
+
     if(user?.sub && user?.email && !hasCreatedUser.current){
-        createUserRequest.mutate({auth0Id: user.sub, email: user.email});
         hasCreatedUser.current = true;
+        createUserRequest.mutateAsync({auth0Id: user.sub, email: user.email})
+          .finally(() => {
+            sessionStorage.removeItem("authReturnTo");
+            navigate(returnTo);
+          });
     }
-    navigate('/');
   }, [ createUserRequest, navigate, user ]); // indican que este ue se ejecutara unicamente una vez al cargar el componente
 
   return (

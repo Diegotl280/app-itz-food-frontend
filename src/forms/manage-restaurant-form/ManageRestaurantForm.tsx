@@ -39,22 +39,13 @@ export default function ManageRestaurantForm({onSave, isLoading, restaurante}: P
         return
 
     // Formateamos a numérico el precio de entrega
-    const deliveryPriceFormatted = parseInt(
-        restaurante.deliveryPrice
-    );
-
-    // Formateamos a númerico el tiempo de entrega
-    const estimatedDeliveryTimeFormatted = parseInt(
-        restaurante.estimatedDeliveryTime
-    )
-
     // Cargamos los datos restantes extraídos del backend de la variable
     // Restaurante en updateRestaurante y los complementamos
     // Con los datos formateados
     const updateRestaurante = {
         ...restaurante,
-        deliveryPrice: deliveryPriceFormatted,
-        estimatedDeliveryTime: estimatedDeliveryTimeFormatted
+        deliveryPrice: restaurante.deliveryPrice,
+        estimatedDeliveryTime: restaurante.estimatedDeliveryTime
     }
 
     // Asignamos los datos del restaurante cargado en updateRestaurante al formulario

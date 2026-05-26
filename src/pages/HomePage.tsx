@@ -1,9 +1,19 @@
+import { useEffect } from 'react';
 import SearchBar, { type SearchForm } from '@/components/SearchBar';
 import landingImage from '../assets/landing.png';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
+import { toast } from 'sonner';
 
 export default function HomePage() {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (searchParams.get('orderStatus') === 'success') {
+            toast.success('Pedido realizado correctamente');
+            setSearchParams({});
+        }
+    }, [searchParams, setSearchParams]);
 
     const handleSearchSubmit = ( searchFormValues: SearchForm) => {
         navigate({
