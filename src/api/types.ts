@@ -70,3 +70,42 @@ export type CheckOutSessionRequest = {
 export type CheckOutSessionResponse = {
     url: string;
 }
+
+export type OrderStatus =
+    | "placed"
+    | "paid"
+    | "inProgress"
+    | "outForDelivery"
+    | "delivered";
+
+export type OrderStatusInfo = {
+    label: string;
+    value: OrderStatus;
+    progressValue: number;
+};
+
+export type Order = {
+    _id: string;
+    restaurante: Restaurante;
+    user: BackEndUser;
+    deliveryDetails: {
+        email: string;
+        name: string;
+        address: string;
+        city: string;
+        country: string;
+    };
+    cartItems: {
+        menuItemId: string;
+        name: string;
+        quantity: number;
+    }[];
+    totalAmount: number;
+    status: OrderStatus;
+    createdAt: string;
+};
+
+export type UpdateOrderStatusRequest = {
+    orderId: string;
+    status: OrderStatus;
+};

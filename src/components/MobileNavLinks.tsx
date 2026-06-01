@@ -12,6 +12,16 @@ export default function MobileNavLinks() {
                   hover:text-orange-500 mx-4">
                     Perfil
         </Link>
+        <Link to="/order-status"
+                  className="flex items-center px-3 font-bold
+                  hover:text-orange-500 mx-4">
+                    Listado de Órdenes
+        </Link>
+        <Link to="/manage-restaurant"
+                  className="flex items-center px-3 font-bold
+                  hover:text-orange-500 mx-4">
+                    Administrar Restaurante
+        </Link>
         <Button onClick={()=>logout()}
                 className="flex items-center px-3 font-bold
                             hover:text-orange-500 mx-4">

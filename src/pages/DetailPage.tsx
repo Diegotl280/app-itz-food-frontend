@@ -101,10 +101,10 @@ export default function DetailPage() {
 
     return (
         <div className="flex flex-col gap-10">
-            <AspectRatio ratio={16 / 5}>
+            <AspectRatio ratio={16 / 5} className="overflow-hidden rounded-md">
                 <img
                     src={restaurante.imageUrl}
-                    className="rounded-md object-cover w-full h-full"
+                    className="object-cover w-full h-full"
                     alt={restaurante.restauranteName}
                 />
             </AspectRatio>

@@ -1,7 +1,12 @@
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from 'sonner';
-import type { Restaurante, RestauranteSearchResponse } from './types';
+import type {
+    Order,
+    Restaurante,
+    RestauranteSearchResponse,
+    UpdateOrderStatusRequest,
+} from './types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -159,3 +164,71 @@ export const useSearchRestaurantes = (searchState: SearchState, city?: string) =
     }); // Fin de return
 }; // Fin de useSearchRestaurantes
 
+export function useGetRestaurantOrders() {
+    const { getAccessTokenSilently } = useAuth0();
+
+    const getRestaurantOrdersRequest = async (): Promise<Order[]> => {
+        const accessToken = await getAccessTokenSilently();
+
+        const res = await fetch(API_BASE_URL + "/api/order/restaurant", {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + accessToken,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!res.ok) {
+            throw new Error("Error al obtener las órdenes del restaurante");
+        }
+
+        return res.json();
+    };
+
+    return useQuery({
+        queryKey: ["restaurantOrders"],
+        queryFn: getRestaurantOrdersRequest,
+        refetchInterval: 5000,
+    });
+}
+
+export function useUpdateRestauranteOrder() {
+    const queryClient = useQueryClient();
+    const { getAccessTokenSilently } = useAuth0();
+
+    const updateRestauranteOrderRequest = async (
+        updateStatusOrderRequest: UpdateOrderStatusRequest
+    ): Promise<Order> => {
+        const accessToken = await getAccessTokenSilently();
+
+        const res = await fetch(
+            API_BASE_URL + `/api/order/${updateStatusOrderRequest.orderId}/status`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: "Bearer " + accessToken,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ status: updateStatusOrderRequest.status })
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error("Error al actualizar el estado de la orden");
+        }
+
+        return res.json();
+    };
+
+    return useMutation({
+        mutationFn: updateRestauranteOrderRequest,
+        onError: (err) => {
+            toast.error(err.toString());
+        },
+        onSuccess: () => {
+            toast.success("Orden actualizada");
+            queryClient.invalidateQueries({ queryKey: ["restaurantOrders"] });
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+        }
+    });
+}
